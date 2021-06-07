@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="item" format="reference" />
+    <declare-styleable name="MyListVIew">
+        <attr name="item" />
+    </declare-styleable>
+    <declare-styleable name="MyRecyclerView">
+        <attr name="item" />
+    </declare-styleable>
+    <attr name="empty_layout" format="reference" />
+    <declare-styleable name="MyRefreshRecyclerView">
+        <attr name="item" />
+        <attr name="empty_layout" />
+    </declare-styleable>
+    <declare-styleable name="MyRefreshListView">
+        <attr name="item" />
+        <attr name="empty_layout" />
+    </declare-styleable>
+</resources>

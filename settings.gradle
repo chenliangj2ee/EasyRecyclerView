@@ -1,0 +1,3 @@
+include ':DogLibrary'
+include ':app'
+rootProject.name = "EasyRecyclerView"
