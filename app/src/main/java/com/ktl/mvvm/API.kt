@@ -5,7 +5,6 @@ import android.os.Looper
 import com.ktl.mvvm.model.Product
 
 object API{
-
     /**
      * 获取商品列表
      */
