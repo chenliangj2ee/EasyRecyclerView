@@ -17,11 +17,11 @@
 
 # EasyRecyclerView
 
-## 通过Kotlin语言，基于MVVM模式，通过ViewBinding，ViewModel技术，实现了数据RecyclerView与ListView列表adapter适配，下拉刷新，加载更多的最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，【目前只适用与列表为单一type类型，下拉刷新使用SmartRefreshLayout库】
+### 通过Kotlin语言，基于MVVM模式，通过ViewBinding，ViewModel技术，实现了数据RecyclerView与ListView列表adapter适配，下拉刷新，加载更多的最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，【目前只适用与列表为单一type类型，下拉刷新使用SmartRefreshLayout库】
 
 
 
-## Activity继承：MyBaseActivity如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局对应Binding： 
+### Activity继承：MyBaseActivity如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局对应Binding： 
 
     class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
 
@@ -48,8 +48,8 @@
 
 }
 ## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
-## app:item="@layout/item_product"：指定item布局， 
-## app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局：
+### app:item="@layout/item_product"：指定item布局， 
+### app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局：
 
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
