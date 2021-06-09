@@ -17,7 +17,7 @@
 
 # EasyRecyclerView
 
-### 通过Kotlin语言，基于MVVM模式，通过ViewBinding，ViewModel，LiveData技术，实现了数据RecyclerView与ListView列表adapter适配，下拉刷新，加载更多的最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，【目前只适用与列表为单一type类型，下拉刷新使用SmartRefreshLayout库】
+### 通过Kotlin语言，基于MVVM模式，通过ViewBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，【目前只适用与列表为单一type类型，下拉刷新使用SmartRefreshLayout库，默认使用linear布局，可以通过 refresh.recyclerView实现对RecyclerView操作】
 
 
 
@@ -35,10 +35,10 @@
     }
 
     override fun initCreate() {
-       //**************** ***********核心代码*************************************
        //第一步：绑定item与model ，it.key.product对应item布局里声明的variable变量，固定写法：it.key.xxx=it.value
+       //第二部：下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
+       //**************** ***********核心代码*************************************
         refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
-        //第二部：下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
         refresh.loadData(viewModel.products){  viewModel.getProducts(  refresh.pageIndex,  refresh.pageSize ) }
        //**************** ***********核心代码*************************************
     }
