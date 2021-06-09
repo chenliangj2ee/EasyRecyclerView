@@ -1,5 +1,5 @@
 # 使用步骤： 
-第一步：再proje build中添加：
+第一步：再project build.gradle中添加：
 
     	allprojects {
 		repositories {
@@ -8,7 +8,7 @@
 		}
 	}
 
-第二部：再module中添加：
+第二部：再module.gradle中添加：
 
     dependencies {
 	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.2.0'
