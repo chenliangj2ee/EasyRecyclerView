@@ -35,8 +35,8 @@
     }
 
     override fun initCreate() {
-       //第一步：refresh.bindData方法，绑定item与model ，it.key.product对应item布局里声明的variable变量，固定写法：it.key.xxx=it.value
-       //第二部：refresh.loadData方法，下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
+       //第一步：调用refresh.bindData方法，绑定item与model ，it.key.product对应item布局里声明的variable变量，固定写法：it.key.xxx=it.value
+       //第二部：调用refresh.loadData方法，下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
        //**************** ***********核心代码*************************************
         refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
         refresh.loadData(viewModel.products){  viewModel.getProducts(  refresh.pageIndex,  refresh.pageSize ) }
