@@ -76,3 +76,17 @@ app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布�
  
 </layout> 
 
+
+class PruductListViewModel : ViewModel() {
+    var products = MutableLiveData<ArrayList<Product>>()
+    fun getProducts(pageIndex: Int, pageSize: Int) {
+        //模拟网络访问
+        handler.postDelayed(Runnable {
+            var results = ArrayList<Product>()
+            results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
+            products.value = results
+
+        }, 1000)
+
+    }
+}
