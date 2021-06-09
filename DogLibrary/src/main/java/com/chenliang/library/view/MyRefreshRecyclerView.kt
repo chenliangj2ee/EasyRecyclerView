@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.chenliang.library.R
+import com.chenliang.library.bean.Bind
 import com.chenliang.library.utils.show
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -59,7 +60,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
 
     private var rootView: FrameLayout? = null
     private var emptyLayout: View? = null
-    private var recyclerView: MyRecyclerView? = null
+    open var recyclerView: MyRecyclerView? = null
     private var params: ViewGroup.LayoutParams? = null
 
     private var emptyLayoutId: Int = 0
@@ -71,13 +72,11 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
 
     private var loadFun: (() -> Unit?)? = null
 
-    constructor(context: Context?) : super(context!!) {
-
-    }
+    constructor(context: Context?) : super(context!!) { }
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray =
-            context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
+                context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
         emptyLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_empty_layout, 0)
         layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item, 0)
         params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -124,31 +123,15 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         }
     }
 
-    public fun <B : ViewDataBinding, D : Any> bindData(
-        layoutId: Int,
-        func: (bind: B, bean: D) -> Unit
-    ) {
-        recyclerView!!.binding(layoutId, func)
 
-    }
-
-    public fun <B : ViewDataBinding, D : Any> bindData(
-        func: (bind: B, bean: D) -> Unit
-    ): MyRefreshRecyclerView {
+    fun <B : ViewDataBinding, D : Any> bindData(func: (bind: Bind<B, D>) -> Unit): MyRefreshRecyclerView {
         recyclerView!!.binding(func)
         return this
     }
 
-    public fun loadData(func: () -> Unit): MyRefreshRecyclerView {
-        Log.i("MyDog", "自动刷新,pageIndex:$pageIndex")
-        loadFun = func
-        func()
-        return this
-    }
-
-    public fun <T : Any> loadData(
-        mutableLiveData: MutableLiveData<ArrayList<T>>,
-        func: () -> Unit
+    fun <T : Any> loadData(
+            mutableLiveData: MutableLiveData<ArrayList<T>>,
+            func: () -> Unit
     ): MyRefreshRecyclerView {
         Log.i("MyDog", "自动刷新,pageIndex:$pageIndex")
         loadFun = func
@@ -157,7 +140,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         return this
     }
 
-    public fun <D : Any> addData(list: ArrayList<D>) {
+    private fun <D : Any> addData(list: ArrayList<D>) {
         if (list != null) {
             if (pageIndex == defaultPageIndex) {
                 recyclerView!!.clearData<Any>()
@@ -177,7 +160,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         this.finishLoadMore()
     }
 
-    fun <T : Any> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {
+    private fun <T : Any> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {
         mutableLiveData.observe(this.context as LifecycleOwner, Observer<ArrayList<T>> {
             this.addData(it)
         })

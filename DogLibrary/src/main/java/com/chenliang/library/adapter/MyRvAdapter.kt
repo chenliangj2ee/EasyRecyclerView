@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.chenliang.library.bean.Bind
 
 /**
  * chenliang
@@ -14,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
  * 2021-03-13
  */
 open class MyRvAdapter<B : ViewDataBinding, D : Any>(
-    context: Context, layoutId: Int,
-    func: (binding: B, bean: D) -> Unit
+        context: Context, layoutId: Int,
+        func: (bind: Bind<B, D>) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var con = context;
@@ -39,10 +40,11 @@ open class MyRvAdapter<B : ViewDataBinding, D : Any>(
     }
 
     private fun onBindViewHolder(binding: B, bean: D) {
-        func(binding, bean)
+        var b = Bind<B, D>()
+        b.key = binding
+        b.value = bean
+        func(b)
     }
-
-
 
 
     override fun getItemCount(): Int {

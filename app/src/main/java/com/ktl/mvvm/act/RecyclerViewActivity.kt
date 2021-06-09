@@ -1,5 +1,6 @@
 package com.ktl.mvvm.act
 
+import android.content.ClipData
 import android.view.View
 import android.widget.Toast
 import com.chenliang.library.base.MyBaseActivity
@@ -24,16 +25,15 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
 
     override fun initCreate() {
 
-        refresh.bindData { binding: ItemProductBinding, bean: Product ->
-            binding.product = bean; binding.act = this
-        }
-        refresh.loadData(viewModel.products) {
-            viewModel.getProducts(
-                refresh.pageIndex,
-                refresh.pageSize
-            )
-        }
 
+        refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
+        refresh.loadData(viewModel.products){httpGetData() }
+
+
+    }
+
+    private fun httpGetData() {
+        viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
     }
 
 

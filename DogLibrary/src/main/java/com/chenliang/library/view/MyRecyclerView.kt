@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chenliang.library.R
 import com.chenliang.library.adapter.MyRvAdapter
+import com.chenliang.library.bean.Bind
 
 /**
  * chenliang
@@ -52,24 +53,14 @@ class MyRecyclerView : RecyclerView {
     }
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
-        val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyListVIew)
+        val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyRecyclerView)
 
-        layoutId = typedArray.getResourceId(R.styleable.MyListVIew_item, 0)
+        layoutId = typedArray.getResourceId(R.styleable.MyRecyclerView_item, 0)
     }
 
-    public fun <B : ViewDataBinding, D : Any> binding(
-        layoutId: Int,
-        func: (bind: B, bean: D) -> Unit
-    ) {
 
-        if (layoutManager == null)
-            layoutManager = LinearLayoutManager(context)
-        listAdapter = MyRvAdapter<B, D>(context, layoutId!!, func)
-        adapter = listAdapter
-    }
-
-    public fun <B : ViewDataBinding, D : Any> binding(
-        func: (bind: B, bean: D) -> Unit
+    fun <B : ViewDataBinding, D : Any> binding(
+            func: (bind: Bind<B, D>) -> Unit
     ) {
 
         if (layoutManager == null)
@@ -84,6 +75,7 @@ class MyRecyclerView : RecyclerView {
     }
 
     public fun <D : Any> clearData() {
+
         (listAdapter as MyRvAdapter<*, D>).data.clear()
         listAdapter.notifyDataSetChanged()
     }
