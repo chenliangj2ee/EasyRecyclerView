@@ -47,7 +47,9 @@
     }
 
 }
-## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局，   app:item="@layout/item_product"指定item布局， app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布局：
+## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
+## app:item="@layout/item_product"：指定item布局， 
+## app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局：
 
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -100,6 +102,8 @@
         handler.postDelayed(Runnable {
             var results = ArrayList<Product>()
             results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
+	    results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
+	    results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
             products.value = results
 
         }, 1000)
