@@ -1,9 +1,13 @@
+ 
 # EasyRecyclerView
-基于MVVM实现了数据RecyclerView or ListView列表展示最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了
+
+## 基于MVVM实现了数据RecyclerView or ListView列表展示最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了
 
 
-Activity继承：MyBaseActivity如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局对应Binding：
-class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
+
+## Activity继承：MyBaseActivity如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局对应Binding： 
+
+    class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
 
     override fun layoutId(): Int {
         return R.layout.activity_recycleview;
@@ -27,12 +31,10 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
     }
 
 }
-对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局，  
-app:item="@layout/item_product"指定item布局，
-app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布局：
+## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局，   app:item="@layout/item_product"指定item布局， app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布局：
 
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    <?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -42,21 +44,20 @@ app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布�
         android:layout_height="match_parent"
         app:empty_layout="@layout/layout_empty"
         app:item="@layout/item_product" />
-
-</layout>
-
-对应的item布局：
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="product"
-            type="com.ktl.mvvm.model.Product" />
-    </data>
+     </layout>
      
-    <LinearLayout
+
+## 对应的item布局：
+<?xml version="1.0" encoding="utf-8"?>
+   <layout xmlns:android="http://schemas.android.com/apk/res/android"
+   
+  >
+	    <data>
+	        <variable
+	            name="product"
+	            type="com.ktl.mvvm.model.Product" />
+	    </data>
+     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -73,11 +74,10 @@ app:empty_layout="@layout/layout_empty"指定列表数据为null时显示的布�
              android:layout_weight="1"
              android:text="@{product.price}" />
       </LinearLayout>
- 
-</layout> 
+      </layout> 
+## 对应ViewModel
 
-
-class PruductListViewModel : ViewModel() {
+    class PruductListViewModel : ViewModel() {
     var products = MutableLiveData<ArrayList<Product>>()
     fun getProducts(pageIndex: Int, pageSize: Int) {
         //模拟网络访问
