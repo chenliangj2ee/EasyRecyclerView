@@ -97,7 +97,7 @@ class PruductListViewModel : ViewModel() {
     
     fun getProducts(pageIndex: Int, pageSize: Int) {
         //模拟网络访问
-        handler.postDelayed(Runnable {
+        Handler().postDelayed(Runnable {
             var results = ArrayList<Product>()
             results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
             results.add(Product("苹果",  "12元一斤",   "", "日本",  "来自日本富士苹果 ",  0))
