@@ -4,14 +4,14 @@
     	allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+		       maven { url 'https://jitpack.io' }
 		}
 	}
 
 第二部：再module中添加：
 
     dependencies {
-	        implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.0.0'
+	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.2.0'
 	} 
 
 
@@ -21,7 +21,7 @@
 
 
 
-### Activity继承：MyBaseActivity【也可以继承自己定义的】如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局对应Binding： 
+### Activity继承自MyBaseActivity【也可以继承自己定义的】如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局自动生成的Binding： 
 
     class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
 
@@ -36,21 +36,17 @@
 
     override fun initCreate() {
        //**************** ***********核心代码*************************************
-       //第一步：绑定item与model ，binding.product对应item布局里声明的variable变量
-        refresh.bindData { binding: ItemProductBinding, bean: Product ->
-            binding.product = bean; 
-        }
+       //第一步：绑定item与model ，it.key.product对应item布局里声明的variable变量，固定写法：it.key.xxx=it.value
+        refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
         //第二部：下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
-        refresh.loadData(viewModel.products) {
-               viewModel.getProducts(  refresh.pageIndex,  refresh.pageSize )
-        }
+        refresh.loadData(viewModel.products){  viewModel.getProducts(  refresh.pageIndex,  refresh.pageSize ) }
        //**************** ***********核心代码*************************************
     }
 
 }
 ## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
 ### app:item="@layout/item_product"：指定item布局， 
-### app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局：
+### app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局。
 
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,13 +65,12 @@
 ## 对应的item布局：
 <?xml version="1.0" encoding="utf-8"?>
    <layout xmlns:android="http://schemas.android.com/apk/res/android"
-   
   >
-	    <data>
+	 <data>
 	        <variable
 	            name="product"
 	            type="com.ktl.mvvm.model.Product" />
-	    </data>
+	 </data>
      <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -96,8 +91,10 @@
       </layout> 
 ## 对应ViewModel
 
-    class PruductListViewModel : ViewModel() {
+class PruductListViewModel : ViewModel() {
+
     var products = MutableLiveData<ArrayList<Product>>()
+    
     fun getProducts(pageIndex: Int, pageSize: Int) {
         //模拟网络访问
         handler.postDelayed(Runnable {
