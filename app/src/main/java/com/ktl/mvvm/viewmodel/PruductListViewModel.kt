@@ -30,7 +30,7 @@ class PruductListViewModel : ViewModel() {
 //        })
 
 
-        go({ API.getProductList2() }) { it.yes { products.value=it.bean.data } }
+        go({ API.getProductList2() }){ it.yes { products.value=it.bean.data } }
 
 
     }
