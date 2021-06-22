@@ -1,8 +1,12 @@
 package com.ktl.mvvm.act
 
 import android.content.ClipData
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.chenliang.library.base.MyBaseActivity
 import com.ktl.mvvm.R
 import com.ktl.mvvm.databinding.ActivityRecycleviewBinding
@@ -25,9 +29,13 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
 
     override fun initCreate() {
 
+        refresh.recyclerView
+        refresh.bindData<ItemProductBinding, Product> {
+            it.key.product = it.value;it.key.act = this
+        }
+        refresh.loadData(viewModel.products) { httpGetData() }
 
-        refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
-        refresh.loadData(viewModel.products){httpGetData() }
+
 
 
     }
