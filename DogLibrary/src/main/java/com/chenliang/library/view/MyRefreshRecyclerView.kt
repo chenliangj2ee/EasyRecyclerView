@@ -136,6 +136,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         Log.i("MyDog", "自动刷新,pageIndex:$pageIndex")
         loadFun = func
         func()
+        autoRefresh()
         observeData(mutableLiveData)
         return this
     }
