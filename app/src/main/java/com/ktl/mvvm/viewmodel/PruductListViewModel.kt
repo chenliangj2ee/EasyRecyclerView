@@ -19,13 +19,9 @@ import java.lang.Exception
 //https://blog.csdn.net/sange77/article/details/103959389
 class PruductListViewModel : ViewModel() {
     var products = MutableLiveData<ArrayList<Product>>()
-    fun getProducts(pageIndex: Int, pageSize: Int):MutableLiveData<ArrayList<Product>> {
-
-        go({ API.getProductList2(pageIndex, pageSize) }) {
-            it.y {  products.value = if (pageIndex < 3) it.bean.data else null  }
-            it.n { }
-        }
-        return products
+    var p2 = MutableLiveData<Bean<ArrayList<Product>>>()
+    fun getProducts(pageIndex: Int, pageSize: Int) {
+        go({ API.getProductList2(pageIndex, pageSize) }) { p2.value = it.bean }
     }
 
 }
@@ -57,13 +53,6 @@ fun <T> ViewModel.go(
     }
 }
 
-fun <T> Response<T>.y(func: () -> Unit) = this.apply {
-    if (code == 0) {
-        viewModelScope.launch(Dispatchers.Main) {
-            func()
-        }
-    }
-}
 
 fun <T> Response<T>.n(func: () -> Unit) = this.apply {
     if (code != 0) {
@@ -73,7 +62,20 @@ fun <T> Response<T>.n(func: () -> Unit) = this.apply {
     }
 }
 
-fun <T> MutableLiveData<T>.look(owner :LifecycleOwner ,func: (t: T) -> Unit) = this.apply {
+
+fun Any.y(func: () -> Unit) = this.apply {
+    if ((this as Bean<Any>).code == 0) {
+        func()
+    }
+}
+
+fun Any.n(func: () -> Unit) = this.apply {
+    if ((this as Bean<Any>).code != 0) {
+        func()
+    }
+}
+
+fun <T> MutableLiveData<T>.look(owner: LifecycleOwner, func: (t: T) -> Unit) = this.apply {
     this.observe(owner, Observer<T> {
         func(it)
     })

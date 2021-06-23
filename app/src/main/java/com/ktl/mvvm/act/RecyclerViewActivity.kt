@@ -12,8 +12,7 @@ import com.ktl.mvvm.R
 import com.ktl.mvvm.databinding.ActivityRecycleviewBinding
 import com.ktl.mvvm.databinding.ItemProductBinding
 import com.ktl.mvvm.model.Product
-import com.ktl.mvvm.viewmodel.PruductListViewModel
-import com.ktl.mvvm.viewmodel.look
+import com.ktl.mvvm.viewmodel.*
 import kotlinx.android.synthetic.main.activity_recycleview.*
 
 class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
@@ -34,16 +33,30 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
         refresh.bindData<ItemProductBinding, Product> {
             it.key.product = it.value;it.key.act = this
         }
-        refresh.loadData(viewModel.products) { httpGetData() }
-        viewModel.products.look(this){  }
+//        refresh.loadData(viewModel.products) { httpGetData() }
+        refresh.loadData { httpGetData() }
 
     }
 
     private fun httpGetData() {
         viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
-            .look(this){
+        viewModel.p2.look(this) {
+
+            if(it.code==0){
+
+            }else{
 
             }
+
+            when (it.code){
+                0 -> Log.i("chenliang", "0")
+                -1 -> Log.i("chenliang", "-1")
+            }
+
+            y { it.data }
+            n { it.data }
+
+        }
     }
 
 

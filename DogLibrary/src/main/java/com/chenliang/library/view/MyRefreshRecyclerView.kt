@@ -134,13 +134,20 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         func: () -> Unit
     ): MyRefreshRecyclerView {
         loadFun = func
-//        func()
         autoRefresh()
         observeData(mutableLiveData)
         return this
     }
 
-    private fun <D : Any> addData(list: ArrayList<D>?) {
+    fun loadData(
+        func: () -> Unit
+    ): MyRefreshRecyclerView {
+        loadFun = func
+        autoRefresh()
+        return this
+    }
+
+    public fun <D : Any> addData(list: ArrayList<D>?) {
         if (list != null) {
             if (pageIndex == defaultPageIndex) {
                 recyclerView!!.clearData<Any>()
