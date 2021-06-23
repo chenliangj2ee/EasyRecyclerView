@@ -1,7 +1,9 @@
 package com.ktl.mvvm.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ktl.mvvm.API
@@ -17,26 +19,13 @@ import java.lang.Exception
 //https://blog.csdn.net/sange77/article/details/103959389
 class PruductListViewModel : ViewModel() {
     var products = MutableLiveData<ArrayList<Product>>()
-    fun getProducts(pageIndex: Int, pageSize: Int) {
-//        API.getProductList(object : Callback<ArrayList<Product>> {
-//            override fun success(t: ArrayList<Product>) {
-//                products.value = t
-//            }
-//
-//            override fun failed(m: String) {
-//
-//            }
-//
-//        })
-
+    fun getProducts(pageIndex: Int, pageSize: Int):MutableLiveData<ArrayList<Product>> {
 
         go({ API.getProductList2(pageIndex, pageSize) }) {
-            it.y { products.value = it.bean.data }
-            it.n {  }
+            it.y {  products.value = if (pageIndex < 3) it.bean.data else null  }
+            it.n { }
         }
-        go({ API.getProductList2(10, 10) }) { it.y { } }
-
-
+        return products
     }
 
 }
@@ -82,4 +71,10 @@ fun <T> Response<T>.n(func: () -> Unit) = this.apply {
             func()
         }
     }
+}
+
+fun <T> MutableLiveData<T>.look(owner :LifecycleOwner ,func: (t: T) -> Unit) = this.apply {
+    this.observe(owner, Observer<T> {
+        func(it)
+    })
 }

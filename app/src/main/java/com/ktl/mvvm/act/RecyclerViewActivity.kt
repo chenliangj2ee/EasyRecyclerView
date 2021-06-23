@@ -13,6 +13,7 @@ import com.ktl.mvvm.databinding.ActivityRecycleviewBinding
 import com.ktl.mvvm.databinding.ItemProductBinding
 import com.ktl.mvvm.model.Product
 import com.ktl.mvvm.viewmodel.PruductListViewModel
+import com.ktl.mvvm.viewmodel.look
 import kotlinx.android.synthetic.main.activity_recycleview.*
 
 class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
@@ -34,14 +35,15 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
             it.key.product = it.value;it.key.act = this
         }
         refresh.loadData(viewModel.products) { httpGetData() }
-
-
-
+        viewModel.products.look(this){  }
 
     }
 
     private fun httpGetData() {
         viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
+            .look(this){
+
+            }
     }
 
 

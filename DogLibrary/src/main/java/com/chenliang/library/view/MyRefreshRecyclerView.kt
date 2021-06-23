@@ -66,17 +66,17 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     private var emptyLayoutId: Int = 0
     private var layoutId: Int = 0
 
-    var pageSize: Int = 3
+    var pageSize: Int = 10
     var defaultPageIndex: Int = 1
     var pageIndex: Int = defaultPageIndex
 
     private var loadFun: (() -> Unit?)? = null
 
-    constructor(context: Context?) : super(context!!) { }
+    constructor(context: Context?) : super(context!!) {}
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray =
-                context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
+            context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
         emptyLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_empty_layout, 0)
         layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item, 0)
         params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -130,18 +130,17 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     }
 
     fun <T : Any> loadData(
-            mutableLiveData: MutableLiveData<ArrayList<T>>,
-            func: () -> Unit
+        mutableLiveData: MutableLiveData<ArrayList<T>>,
+        func: () -> Unit
     ): MyRefreshRecyclerView {
-        Log.i("MyDog", "自动刷新,pageIndex:$pageIndex")
         loadFun = func
-        func()
+//        func()
         autoRefresh()
         observeData(mutableLiveData)
         return this
     }
 
-    private fun <D : Any> addData(list: ArrayList<D>) {
+    private fun <D : Any> addData(list: ArrayList<D>?) {
         if (list != null) {
             if (pageIndex == defaultPageIndex) {
                 recyclerView!!.clearData<Any>()
