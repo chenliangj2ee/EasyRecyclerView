@@ -1,82 +1,21 @@
 package com.ktl.mvvm.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ktl.mvvm.API
-import com.ktl.mvvm.Callback
-import com.ktl.mvvm.act.Bean
-import com.ktl.mvvm.act.Response
 import com.ktl.mvvm.model.Product
-import kotlinx.coroutines.*
-import java.lang.Exception
 
 //https://www.jianshu.com/p/6a33f367a56d
 //https://blog.csdn.net/u010368726/article/details/115225787
 //https://blog.csdn.net/sange77/article/details/103959389
+
 class PruductListViewModel : ViewModel() {
-    var products = MutableLiveData<ArrayList<Product>>()
-    var p2 = MutableLiveData<Bean<ArrayList<Product>>>()
+
+    var p = initData<Product>()
+    var ps = initDatas<Product>()
+
     fun getProducts(pageIndex: Int, pageSize: Int) {
-        go({ API.getProductList2(pageIndex, pageSize) }) { p2.value = it.bean }
+        go({ API.getProductList2(pageIndex, pageSize) }) { ps.value = it.bean }
     }
 
 }
 
-
-fun <T> ViewModel.go(
-    block: suspend CoroutineScope.() -> Bean<T>,
-    funResponse: (Response<T>) -> Unit
-) {
-    viewModelScope.launch(Dispatchers.IO) {
-        Log.i("chenliang", "发起请求...")
-
-        var response = Response<T>()
-        response.viewModelScope = viewModelScope
-        try {
-            var bean = block()
-            response.code = 0
-            bean.message = "成功"
-            response.bean = bean;
-            funResponse(response)
-        } catch (e: Exception) {
-            var bean = Bean<T>()
-            bean.message = "失败"
-            response.code = -1
-            response.bean = bean
-            funResponse(response)
-            Log.e("chenliang", e.stackTraceToString())
-        }
-    }
-}
-
-
-fun <T> Response<T>.n(func: () -> Unit) = this.apply {
-    if (code != 0) {
-        viewModelScope.launch(Dispatchers.Main) {
-            func()
-        }
-    }
-}
-
-
-fun Any.y(func: () -> Unit) = this.apply {
-    if ((this as Bean<Any>).code == 0) {
-        func()
-    }
-}
-
-fun Any.n(func: () -> Unit) = this.apply {
-    if ((this as Bean<Any>).code != 0) {
-        func()
-    }
-}
-
-fun <T> MutableLiveData<T>.look(owner: LifecycleOwner, func: (t: T) -> Unit) = this.apply {
-    this.observe(owner, Observer<T> {
-        func(it)
-    })
-}

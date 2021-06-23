@@ -11,7 +11,6 @@ class Test {
     fun t(block:  MyInterface.() -> Unit,i:Int): Unit {
 
 
-
     }
 }
 

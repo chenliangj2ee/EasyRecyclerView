@@ -40,21 +40,22 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
 
     private fun httpGetData() {
         viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
-        viewModel.p2.look(this) {
+        viewModel.ps.obs(this) {
 
-            if(it.code==0){
+//            if(it.code==0){
+//
+//            }else{
+//
+//            }
 
-            }else{
-
-            }
-
-            when (it.code){
-                0 -> Log.i("chenliang", "0")
-                -1 -> Log.i("chenliang", "-1")
-            }
+//            when (it.code){
+//                0 -> Log.i("chenliang", "0")
+//                -1 -> Log.i("chenliang", "-1")
+//            }
 
             y { it.data }
             n { it.data }
+
 
         }
     }
