@@ -130,7 +130,7 @@ object API {
     /**
      * 获取商品列表
      */
-    fun getProductList2(): Bean<ArrayList<Product>> {
+    fun getProductList2(pageIndex: Int, pageSize: Int): Bean<ArrayList<Product>> {
 
         var users = ArrayList<Product>()
         users.add(

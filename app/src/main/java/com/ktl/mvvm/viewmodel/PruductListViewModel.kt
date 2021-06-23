@@ -30,7 +30,11 @@ class PruductListViewModel : ViewModel() {
 //        })
 
 
-        go({ API.getProductList2() }){ it.yes { products.value=it.bean.data } }
+        go({ API.getProductList2(pageIndex, pageSize) }) {
+            it.y { products.value = it.bean.data }
+            it.n {  }
+        }
+        go({ API.getProductList2(10, 10) }) { it.y { } }
 
 
     }
@@ -64,7 +68,7 @@ fun <T> ViewModel.go(
     }
 }
 
-fun <T> Response<T>.yes(func: () -> Unit) = this.apply {
+fun <T> Response<T>.y(func: () -> Unit) = this.apply {
     if (code == 0) {
         viewModelScope.launch(Dispatchers.Main) {
             func()
@@ -72,7 +76,7 @@ fun <T> Response<T>.yes(func: () -> Unit) = this.apply {
     }
 }
 
-fun <T> Response<T>.no(func: () -> Unit) = this.apply {
+fun <T> Response<T>.n(func: () -> Unit) = this.apply {
     if (code != 0) {
         viewModelScope.launch(Dispatchers.Main) {
             func()
