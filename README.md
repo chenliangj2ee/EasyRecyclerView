@@ -67,7 +67,7 @@
         android:layout_height="match_parent"
         app:empty_layout="@layout/layout_empty"
         app:item="@layout/item_product" />
-     </layout>
+</layout>
 ```     
 
 ## 对应的item布局：
@@ -97,7 +97,7 @@
              android:layout_weight="1"
              android:text="@{product.price}" />
       </LinearLayout>
-      </layout> 
+</layout> 
 ```
 ## 对应ViewModel
 ```
