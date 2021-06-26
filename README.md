@@ -8,7 +8,7 @@
 
 
 
-## 使用步骤： 
+## 一、使用步骤： 
 第一步：在project build.gradle中添加：
 ```
 
@@ -28,7 +28,7 @@
 ```
 
 
-## Activity继承自MyBaseActivity【也可以继承自己定义的】：
+## 二、Activity继承自MyBaseActivity【也可以继承自己定义的】：
 ```
     class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
 
@@ -52,7 +52,7 @@
 
 }
 ```
-## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
+## 三、对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
 ##### -----app:item="@layout/item_product"：指定item布局， 
 ##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局。
 ```
@@ -70,7 +70,7 @@
 </layout>
 ```     
 
-## 对应的item布局：
+## 四、对应的item布局：
 ```
 <?xml version="1.0" encoding="utf-8"?>
    <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -99,7 +99,7 @@
       </LinearLayout>
 </layout> 
 ```
-## 对应ViewModel
+## 五、对应ViewModel
 ```
 class PruductListViewModel : ViewModel() {
 
