@@ -4,7 +4,8 @@
 ## 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能【目前只适用与列表为单一type类型】
 
 ## 效果展示：
-![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123511930-08354480-d6b7-11eb-9961-fcdea7837ac8.gif)
+![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)
+
 
 
 ## 使用步骤： 
