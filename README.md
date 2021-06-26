@@ -28,7 +28,7 @@
 ```
 
 
-## Activity继承自MyBaseActivity【也可以继承自己定义的】如下，ActivityRecycleviewBinding为R.layout.activity_recycleview布局自动生成的Binding： 
+## Activity继承自MyBaseActivity【也可以继承自己定义的】：
 ```
     class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
 
@@ -53,8 +53,8 @@
 }
 ```
 ## 对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
-### app:item="@layout/item_product"：指定item布局， 
-### app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局。
+##### -----app:item="@layout/item_product"：指定item布局， 
+##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局。
 ```
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
