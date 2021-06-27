@@ -98,6 +98,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         if (emptyLayoutId != 0) {
             emptyLayout = View.inflate(context, emptyLayoutId, null)
             rootView!!.addView(emptyLayout, params)
+            emptyLayout!!.show(false)
         }
     }
 

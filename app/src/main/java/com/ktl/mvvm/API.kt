@@ -128,7 +128,7 @@ object API {
     }
 
     /**
-     * 获取商品列表
+     * 获取商品列表测试使用
      */
     fun getProductList2(pageIndex: Int, pageSize: Int): Bean<ArrayList<Product>> {
 
@@ -235,6 +235,7 @@ object API {
         )
 
         var bean = Bean<ArrayList<Product>>()
+        bean.code=0
         bean.data = users
         return bean
 

@@ -20,6 +20,11 @@ fun <T> ViewModel.initData(): MutableLiveData<Bean<T>> {
 fun <T> ViewModel.initDatas(): MutableLiveData<Bean<ArrayList<T>>> {
     return MutableLiveData<Bean<ArrayList<T>>>()
 }
+
+/**
+ * 网络数据加载请参考最新代码：https://github.com/chenliangj2ee/MyRetrofitGo
+ * 以下代码，仅供测试使用：
+ */
 fun <T> ViewModel.go(
     block: suspend CoroutineScope.() -> Bean<T>,
     funResponse: (Response<T>) -> Unit
@@ -34,13 +39,17 @@ fun <T> ViewModel.go(
             response.code = 0
             bean.message = "成功"
             response.bean = bean;
-            funResponse(response)
+            viewModelScope.launch(Dispatchers.Main) {
+                funResponse(response)
+            }
         } catch (e: Exception) {
             var bean = Bean<T>()
             bean.message = "失败"
             response.code = -1
             response.bean = bean
-            funResponse(response)
+            viewModelScope.launch(Dispatchers.Main) {
+                funResponse(response)
+            }
             Log.e("chenliang", e.stackTraceToString())
         }
     }
@@ -56,20 +65,25 @@ fun <T> Response<T>.n(func: () -> Unit) = this.apply {
 }
 
 
-fun Any.y(func: () -> Unit) = this.apply {
-    if ((this as Bean<Any>).code == 0) {
+fun <T> Bean<ArrayList<T>>.y(func: () -> Unit) = this.apply {
+    if ( code == 0) {
         func()
     }
 }
 
-fun Any.n(func: () -> Unit) = this.apply {
-    if ((this as Bean<Any>).code != 0) {
+fun  <T> Bean<ArrayList<T>>.n(func: () -> Unit) = this.apply {
+    if (code != 0) {
         func()
     }
 }
 
 fun <T> MutableLiveData<T>.obs(owner: LifecycleOwner, func: (t: T) -> Unit) = this.apply {
-    this.observe(owner, Observer<T> {
-        func(it)
-    })
+
+    if(!hasObservers()){
+        this.observe(owner, Observer<T> {
+            func(it)
+        })
+    }
+
+
 }

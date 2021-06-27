@@ -33,7 +33,6 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
         refresh.bindData<ItemProductBinding, Product> {
             it.key.product = it.value;it.key.act = this
         }
-//        refresh.loadData(viewModel.products) { httpGetData() }
         refresh.loadData { httpGetData() }
 
     }
@@ -41,22 +40,8 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
     private fun httpGetData() {
         viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
         viewModel.ps.obs(this) {
-
-//            if(it.code==0){
-//
-//            }else{
-//
-//            }
-
-//            when (it.code){
-//                0 -> Log.i("chenliang", "0")
-//                -1 -> Log.i("chenliang", "-1")
-//            }
-
-            y { it.data }
-            n { it.data }
-
-
+            it.y { refresh.addData(it.data) }
+            it.n {}
         }
     }
 
