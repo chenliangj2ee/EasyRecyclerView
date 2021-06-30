@@ -23,13 +23,7 @@
             android:orientation="horizontal"
             >
 
-            <ImageView
-                load="@{product.src}"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center"
-                android:background="#bbb"
-                android:scaleType="center" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -61,7 +55,13 @@
                     android:minLines="2"
                     android:text="@{product.des}" />
             </LinearLayout>
-
+            <ImageView
+                load="@{product.src}"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="#bbb"
+                android:scaleType="center" />
         </LinearLayout>
 
         <TextView

@@ -153,6 +153,7 @@ object API {
                 1
             )
         )
+//        users.get(1).recyclerViewType=1
         users.add(
             Product(
                 "南瓜",

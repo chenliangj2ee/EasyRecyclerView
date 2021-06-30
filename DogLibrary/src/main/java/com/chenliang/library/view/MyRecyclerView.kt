@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chenliang.library.R
 import com.chenliang.library.adapter.MyRvAdapter
+import com.chenliang.library.adapter.RecyclerViewData
 import com.chenliang.library.bean.Bind
 
 /**
@@ -46,7 +47,7 @@ import com.chenliang.library.bean.Bind
  */
 class MyRecyclerView : RecyclerView {
     lateinit var listAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-    var layoutId: Int = 0
+    private var layoutIds=ArrayList<Int>()
 
     constructor(context: Context?) : super(context!!) {
 
@@ -55,33 +56,59 @@ class MyRecyclerView : RecyclerView {
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyRecyclerView)
 
-        layoutId = typedArray.getResourceId(R.styleable.MyRecyclerView_item, 0)
+        var layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item1, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item2, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item3, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item4, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item5, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item6, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item7, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item8, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
+        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item9, 0)
+        if(layoutId!=0)
+            layoutIds.add(layoutId)
     }
 
 
-    fun <B : ViewDataBinding, D : Any> binding(
-            func: (bind: Bind<B, D>) -> Unit
+    fun <  D : RecyclerViewData> binding(
+            func: (d: D) -> Unit
     ) {
 
         if (layoutManager == null)
             layoutManager = LinearLayoutManager(context)
-        listAdapter = MyRvAdapter<B, D>(context, layoutId!!, func)
+        listAdapter = MyRvAdapter<D>(context, layoutIds, func)
         adapter = listAdapter
     }
 
-    public fun <D : Any> addData(list: ArrayList<D>) {
-        (listAdapter as MyRvAdapter<*, D>).data.addAll(list)
+    public fun <D : RecyclerViewData> addData(list: ArrayList<D>) {
+        (listAdapter as MyRvAdapter<D>).data.addAll(list)
         listAdapter.notifyDataSetChanged()
     }
 
-    public fun <D : Any> clearData() {
+    public fun <D : RecyclerViewData> clearData() {
 
-        (listAdapter as MyRvAdapter<*, D>).data.clear()
+        (listAdapter as MyRvAdapter<D>).data.clear()
         listAdapter.notifyDataSetChanged()
     }
 
-    public fun <D : Any> getData(): ArrayList<D> {
-        return (listAdapter as MyRvAdapter<*, D>).data
+    public fun <D : RecyclerViewData> getData(): ArrayList<D> {
+        return (listAdapter as MyRvAdapter<D>).data
 
     }
 

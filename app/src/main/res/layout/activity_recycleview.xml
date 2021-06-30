@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:empty_layout="@layout/layout_empty"
-        app:item="@layout/item_product" />
+        app:item1="@layout/item_product"
+        app:item2="@layout/item_product_n" />
+
 
 </layout>
