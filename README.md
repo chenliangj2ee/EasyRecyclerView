@@ -1,11 +1,10 @@
 
 # EasyRecyclerView
 
-## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能【目前只适用与列表为单一type类型】
+## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能, 1.4.0支持单type类型且支持多type类型布局，如需要查看源码，请到1.4.0分支查看代码。
 
-## 效果展示：
-![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)
-
+## 效果展示【图1：单Type类型；图2：多Type类型】：
+![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)  ![Video_20210702_111620_851](https://user-images.githubusercontent.com/4067327/124296514-a0866a00-db8c-11eb-93f2-b17cdc605137.gif)
 
 
 ## 一、使用步骤： 
@@ -23,7 +22,7 @@
 第二部：在module.gradle中添加：
 ```
     dependencies {
-	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.2.0'
+	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.4.0'
 	} 
 ```
 
@@ -41,20 +40,35 @@
         return PruductListViewModel::class.java
     }
 
-    //第一步：调用refresh.bindData方法，绑定item与model ，it.key.product对应item布局里声明的variable变量，固定写法：it.key.xxx=it.value
-    //第二部：调用refresh.loadData方法，下拉刷新，上拉加载都调用该方法：viewModel.products为MutableLiveData类型数据集合，分页必须使用refresh.pageIndex,  refresh.pageSize参数
+    //model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是
+    //如果后台给的type类型不是itemType，请使用@SerializedName自定义名字为itemType，itemType为int类型数据
     override fun initCreate() {
+    
+   	refresh.putItemByType("0", R.layout.item_product_0)
+        refresh.putItemByType("1", R.layout.item_product_1)
+        refresh.putItemByType("2", R.layout.item_product_2)
+        refresh.bindData<Product> {
+            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it
+            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it
+            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it
+        }
 
-        refresh.bindData<ItemProductBinding, Product> { it.key.product = it.value }
-        refresh.loadData(viewModel.products){  viewModel.getProducts(  refresh.pageIndex,  refresh.pageSize ) }
+        refresh.loadData { 
+	    viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
+            viewModel.ps.obs(this) {
+            it.y { refresh.addData(it.data) }//向refresh添加数据
+            it.n {}
+        }
+	}
+	
        
     }
 
 }
 ```
 ## 三、对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
-##### -----app:item="@layout/item_product"：指定item布局， 
-##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局。
+##### -----app:item_layout="@layout/item_product"：当为单个item布局时，可以这么指定item布局 
+##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局 
 ```
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:empty_layout="@layout/layout_empty"
-        app:item="@layout/item_product" />
+        app:item_layout="@layout/item_product" />
 </layout>
 ```     
 
