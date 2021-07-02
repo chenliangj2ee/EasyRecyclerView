@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
  * 2021-03-13
  */
 open class MyRvAdapter<D : RecyclerViewData>(
-    context: Context, layoutIds: ArrayList<Int>,
+    context: Context, layoutIds: HashMap<String, Int>,
     func: (d: D) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -27,19 +27,24 @@ open class MyRvAdapter<D : RecyclerViewData>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
+        var type=viewType
+        if (layoutIds.size == 1) {
+            type = 31415926
+        }
+
         val inflater: LayoutInflater = LayoutInflater.from(con)
-        val binding:ViewDataBinding = DataBindingUtil.inflate(inflater, layoutIds[viewType], parent, false)
-        viewHolders[viewType] = MyViewHolder(binding.root)
-        return viewHolders[viewType]!!
+        val layoutId = layoutIds[type.toString()]!!
+        val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, layoutId, parent, false)
+        viewHolders[type] = MyViewHolder(binding.root)
+        return viewHolders[type]!!
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Log.i("MyLog", "onBindViewHolder....")
-        val binding:ViewDataBinding = DataBindingUtil.getBinding(holder.itemView)!!
-//        val binding:ViewDataBinding = DataBindingUtil.getBinding(viewHolders[data[position].recyclerViewType]!!.itemView)!!
+        val binding: ViewDataBinding = DataBindingUtil.getBinding(holder.itemView)!!
         if (binding != null) {
-            data[position].binding=binding
-            onBindViewHolder( data[position])
+            data[position].binding = binding
+            onBindViewHolder(data[position])
             binding.executePendingBindings()
         }
     }
@@ -49,7 +54,7 @@ open class MyRvAdapter<D : RecyclerViewData>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return data[position].recyclerViewType
+        return data[position].itemType
     }
 
 
@@ -66,6 +71,6 @@ open class MyRvAdapter<D : RecyclerViewData>(
 }
 
 open class RecyclerViewData() {
-    open var recyclerViewType = 0
+    open var itemType = 0
     open var binding: ViewDataBinding? = null
 }

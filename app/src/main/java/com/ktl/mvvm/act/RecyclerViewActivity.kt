@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.chenliang.library.base.MyBaseActivity
 import com.ktl.mvvm.R
 import com.ktl.mvvm.databinding.ActivityRecycleviewBinding
+import com.ktl.mvvm.databinding.ItemProduct2Binding
 import com.ktl.mvvm.databinding.ItemProductBinding
 import com.ktl.mvvm.databinding.ItemProductNBinding
 import com.ktl.mvvm.model.Product
@@ -31,19 +32,14 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
 
     override fun initCreate() {
 
-        refresh.recyclerView
+        refresh.putItemByType("0", R.layout.item_product)
+        refresh.putItemByType("1", R.layout.item_product_n)
+        refresh.putItemByType("2", R.layout.item_product_2)
         refresh.bindData<Product> {
-            (it.binding as ItemProductBinding).product=it
-
-//            if (it.recyclerViewType == 0) {
-//                (it.binding as ItemProductBinding).product=it
-//            }
-//            if (it.recyclerViewType == 1) {
-//                (it.binding as ItemProductNBinding).product=it
-//            }
+            if (it.itemType == 0) (it.binding as ItemProductBinding).product = it
+            if (it.itemType == 1) (it.binding as ItemProductNBinding).product = it
+            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it
         }
-
-
 
         refresh.loadData { httpGetData() }
 

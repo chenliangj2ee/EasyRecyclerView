@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="item1" format="reference" />
-    <attr name="item2" format="reference" />
-    <attr name="item3" format="reference" />
-    <attr name="item4" format="reference" />
-    <attr name="item5" format="reference" />
-    <attr name="item6" format="reference" />
-    <attr name="item7" format="reference" />
-    <attr name="item8" format="reference" />
-    <attr name="item9" format="reference" />
-    <declare-styleable name="MyRecyclerView">
-        <attr name="item1" />
-        <attr name="item2" />
-        <attr name="item3" />
-        <attr name="item4" />
-        <attr name="item5" />
-        <attr name="item6" />
-        <attr name="item7" />
-        <attr name="item8" />
-        <attr name="item9" />
-    </declare-styleable>
+
 </resources>

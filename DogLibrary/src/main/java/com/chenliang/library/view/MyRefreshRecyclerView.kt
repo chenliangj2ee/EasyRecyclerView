@@ -65,8 +65,9 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     private var params: ViewGroup.LayoutParams? = null
 
     private var emptyLayoutId: Int = 0
-    private var layoutIds=ArrayList<Int>()
-
+    private var layoutIds = ArrayList<Int>()
+    var layoutId=-1
+    var layoutMap = HashMap<String, Int>()
     var pageSize: Int = 10
     var defaultPageIndex: Int = 1
     var pageIndex: Int = defaultPageIndex
@@ -79,33 +80,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         val typedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
         emptyLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_empty_layout, 0)
-       var layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item1, 0)
-        if(layoutId!=0)
-             layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item2, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item3, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item4, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item5, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item6, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item7, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item8, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item9, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
+          layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item_layout, 0)
 
         params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         setRefreshHeader(ClassicsHeader(context));
@@ -117,6 +92,11 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         initLoadListener()
         setEnableAutoLoadMore(true)
         setReboundDuration(0)
+    }
+
+
+    fun putItemByType(type:String,layoutId:Int){
+        layoutMap[type]=layoutId
     }
 
     private fun initRoot(context: Context?, attributeSet: AttributeSet) {
@@ -148,14 +128,17 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         }
 
         this.setOnLoadMoreListener {
-            pageIndex = recyclerView!!.getData<RecyclerViewData>().size / pageSize + defaultPageIndex
+            pageIndex =
+                recyclerView!!.getData<RecyclerViewData>().size / pageSize + defaultPageIndex
             Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
             loadFun?.invoke()
         }
     }
 
 
-    fun < D : RecyclerViewData> bindData(func: (bind: D) -> Unit): MyRefreshRecyclerView {
+    fun <D : RecyclerViewData> bindData(func: (bind: D) -> Unit): MyRefreshRecyclerView {
+        recyclerView!!.layoutIds=layoutMap
+        recyclerView!!.layoutId=layoutId
         recyclerView!!.binding(func)
         return this
     }
@@ -181,7 +164,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     public fun <D : RecyclerViewData> addData(list: ArrayList<D>?) {
         if (list != null) {
             if (pageIndex == defaultPageIndex) {
-                recyclerView!!.clearData< RecyclerViewData>()
+                recyclerView!!.clearData<RecyclerViewData>()
             }
             recyclerView!!.addData(list)
 

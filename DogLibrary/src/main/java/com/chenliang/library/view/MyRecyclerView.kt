@@ -47,7 +47,8 @@ import com.chenliang.library.bean.Bind
  */
 class MyRecyclerView : RecyclerView {
     lateinit var listAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-    private var layoutIds=ArrayList<Int>()
+    var layoutIds = HashMap<String, Int>()
+    var layoutId = -1
 
     constructor(context: Context?) : super(context!!) {
 
@@ -55,43 +56,19 @@ class MyRecyclerView : RecyclerView {
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyRecyclerView)
+        layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item_layout, 0)
 
-        var layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item1, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item2, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item3, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item4, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item5, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item6, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item7, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item8, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
-        layoutId= typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item9, 0)
-        if(layoutId!=0)
-            layoutIds.add(layoutId)
     }
 
 
-    fun <  D : RecyclerViewData> binding(
-            func: (d: D) -> Unit
+    fun <D : RecyclerViewData> binding(
+        func: (d: D) -> Unit
     ) {
 
         if (layoutManager == null)
             layoutManager = LinearLayoutManager(context)
+        if (layoutIds.isEmpty())
+            layoutIds["31415926"] = layoutId
         listAdapter = MyRvAdapter<D>(context, layoutIds, func)
         adapter = listAdapter
     }
