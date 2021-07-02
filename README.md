@@ -40,8 +40,8 @@
         return PruductListViewModel::class.java
     }
 
-    //model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是
-    //如果后台给的type类型不是itemType，请使用@SerializedName自定义名字为itemType，itemType为int类型数据
+    //model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是R.layout.item_product_0，R.layout.item_product_1，R.layout.item_product_2
+    //如果后台给的type类型名称不是itemType，请使用@SerializedName自定义属性名字为itemType，itemType为int类型数据
     override fun initCreate() {
     
    	refresh.putItemByType("0", R.layout.item_product_0)
