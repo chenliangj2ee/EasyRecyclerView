@@ -1,7 +1,7 @@
 
 # EasyRecyclerView
 
-## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，2行代码搞定，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能, 1.4.0支持单type类型且支持多type类型布局，如需要查看源码，请到1.4.0分支查看代码。
+## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能, 1.4.0支持单type类型且支持多type类型布局，如需要查看源码，请到1.4.0分支查看代码。
 
 ## 效果展示【图1：单Type类型；图2：多Type类型】：
 ![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)  ![Video_20210702_111620_851](https://user-images.githubusercontent.com/4067327/124296514-a0866a00-db8c-11eb-93f2-b17cdc605137.gif)
