@@ -1,21 +1,15 @@
 package com.ktl.mvvm.act
 
-import android.content.ClipData
-import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.chenliang.library.base.MyBaseActivity
 import com.ktl.mvvm.R
-import com.ktl.mvvm.databinding.ActivityRecycleviewBinding
-import com.ktl.mvvm.databinding.ItemProduct2Binding
-import com.ktl.mvvm.databinding.ItemProductBinding
-import com.ktl.mvvm.databinding.ItemProductNBinding
+import com.ktl.mvvm.databinding.*
 import com.ktl.mvvm.model.Product
-import com.ktl.mvvm.viewmodel.*
+import com.ktl.mvvm.viewmodel.PruductListViewModel
+import com.ktl.mvvm.viewmodel.n
+import com.ktl.mvvm.viewmodel.obs
+import com.ktl.mvvm.viewmodel.y
 import kotlinx.android.synthetic.main.activity_recycleview.*
 
 class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductListViewModel>() {
@@ -30,14 +24,18 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
         return PruductListViewModel::class.java
     }
 
+    /**
+     * model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是
+     * 如果后台给的type类型不是itemType，请使用@SerializedName自定义名字为itemType，itemType为int类型数据
+     */
     override fun initCreate() {
 
-        refresh.putItemByType("0", R.layout.item_product)
-        refresh.putItemByType("1", R.layout.item_product_n)
+        refresh.putItemByType("0", R.layout.item_product_0)
+        refresh.putItemByType("1", R.layout.item_product_1)
         refresh.putItemByType("2", R.layout.item_product_2)
         refresh.bindData<Product> {
-            if (it.itemType == 0) (it.binding as ItemProductBinding).product = it
-            if (it.itemType == 1) (it.binding as ItemProductNBinding).product = it
+            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it
+            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it
             if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it
         }
 
