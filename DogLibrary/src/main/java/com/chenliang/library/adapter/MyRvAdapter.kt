@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
  * 2021-03-13
  */
 open class MyRvAdapter<D : RecyclerViewData>(
-    context: Context, layoutIds: HashMap<String, Int>,
+    context: Context, layoutIds: HashMap<Int, Int>,
     func: (d: D) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -33,7 +33,7 @@ open class MyRvAdapter<D : RecyclerViewData>(
         }
 
         val inflater: LayoutInflater = LayoutInflater.from(con)
-        val layoutId = layoutIds[type.toString()]!!
+        val layoutId = layoutIds[type]!!
         val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, layoutId, parent, false)
         viewHolders[type] = MyViewHolder(binding.root)
         return viewHolders[type]!!

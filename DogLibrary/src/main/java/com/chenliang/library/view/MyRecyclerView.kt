@@ -47,7 +47,7 @@ import com.chenliang.library.bean.Bind
  */
 class MyRecyclerView : RecyclerView {
     lateinit var listAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
-    var layoutIds = HashMap<String, Int>()
+    var layoutIds = HashMap<Int, Int>()
     var layoutId = -1
 
     constructor(context: Context?) : super(context!!) {
@@ -68,7 +68,7 @@ class MyRecyclerView : RecyclerView {
         if (layoutManager == null)
             layoutManager = LinearLayoutManager(context)
         if (layoutIds.isEmpty())
-            layoutIds["31415926"] = layoutId
+            layoutIds[31415926] = layoutId
         listAdapter = MyRvAdapter<D>(context, layoutIds, func)
         adapter = listAdapter
     }

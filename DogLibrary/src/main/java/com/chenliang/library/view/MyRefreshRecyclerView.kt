@@ -67,7 +67,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     private var emptyLayoutId: Int = 0
     private var layoutIds = ArrayList<Int>()
     var layoutId=-1
-    var layoutMap = HashMap<String, Int>()
+    var layoutMap = HashMap<Int, Int>()
     var pageSize: Int = 10
     var defaultPageIndex: Int = 1
     var pageIndex: Int = defaultPageIndex
@@ -95,7 +95,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     }
 
 
-    fun putItemByType(type:String,layoutId:Int){
+    fun bindTypeToItemView(type:Int,layoutId:Int){
         layoutMap[type]=layoutId
     }
 

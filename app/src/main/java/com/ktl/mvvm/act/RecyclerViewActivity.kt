@@ -30,9 +30,9 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
      */
     override fun initCreate() {
 
-        refresh.putItemByType("0", R.layout.item_product_0)
-        refresh.putItemByType("1", R.layout.item_product_1)
-        refresh.putItemByType("2", R.layout.item_product_2)
+        refresh.bindTypeToItemView(0, R.layout.item_product_0)
+        refresh.bindTypeToItemView(1, R.layout.item_product_1)
+        refresh.bindTypeToItemView(2, R.layout.item_product_2)
         refresh.bindData<Product> {
             if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it
             if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it
