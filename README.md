@@ -40,17 +40,17 @@
         return PruductListViewModel::class.java
     }
 
-    //model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是R.layout.item_product_0，R.layout.item_product_1，R.layout.item_product_2
+    //model必须继承MyRecyclerViewModel，itemType对应布局类型，为int类型，如下0，1，2，对应的布局依次是R.layout.item_product_0，R.layout.item_product_1，R.layout.item_product_2
     //如果后台给的type类型名称不是itemType，请使用@SerializedName自定义属性名字为itemType，itemType为int类型数据
     override fun initCreate() {
     
-   	refresh.putItemByType("0", R.layout.item_product_0)
-        refresh.putItemByType("1", R.layout.item_product_1)
-        refresh.putItemByType("2", R.layout.item_product_2)
+   	refresh.bindTypeToItemView(0, R.layout.item_product_0)
+        refresh.bindTypeToItemView(1, R.layout.item_product_1)
+        refresh.bindTypeToItemView(2, R.layout.item_product_2)
         refresh.bindData<Product> {
-            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it
-            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it
-            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it
+            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it  //0对应R.layout.item_product_0布局
+            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it  //1对应R.layout.item_product_1布局
+            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it  //2对应 R.layout.item_product_2布局
         }
 
         refresh.loadData { 
