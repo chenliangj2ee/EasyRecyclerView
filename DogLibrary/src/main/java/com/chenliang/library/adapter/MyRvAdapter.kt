@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
  * email:chenliangj2ee@163.com
  * 2021-03-13
  */
-open class MyRvAdapter<D : RecyclerViewData>(
+open class MyRvAdapter<D : MyRecyclerViewModel>(
     context: Context, layoutIds: HashMap<Int, Int>,
     func: (d: D) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -70,7 +70,7 @@ open class MyRvAdapter<D : RecyclerViewData>(
 
 }
 
-open class RecyclerViewData() {
+open class MyRecyclerViewModel() {
     open var itemType = 0
     open var binding: ViewDataBinding? = null
 }

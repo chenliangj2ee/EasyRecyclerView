@@ -2,13 +2,11 @@ package com.chenliang.library.view
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chenliang.library.R
+import com.chenliang.library.adapter.MyRecyclerViewModel
 import com.chenliang.library.adapter.MyRvAdapter
-import com.chenliang.library.adapter.RecyclerViewData
-import com.chenliang.library.bean.Bind
 
 /**
  * chenliang
@@ -61,7 +59,7 @@ class MyRecyclerView : RecyclerView {
     }
 
 
-    fun <D : RecyclerViewData> binding(
+    fun <D : MyRecyclerViewModel> binding(
         func: (d: D) -> Unit
     ) {
 
@@ -73,18 +71,18 @@ class MyRecyclerView : RecyclerView {
         adapter = listAdapter
     }
 
-    public fun <D : RecyclerViewData> addData(list: ArrayList<D>) {
+    public fun <D : MyRecyclerViewModel> addData(list: ArrayList<D>) {
         (listAdapter as MyRvAdapter<D>).data.addAll(list)
         listAdapter.notifyDataSetChanged()
     }
 
-    public fun <D : RecyclerViewData> clearData() {
+    public fun <D : MyRecyclerViewModel> clearData() {
 
         (listAdapter as MyRvAdapter<D>).data.clear()
         listAdapter.notifyDataSetChanged()
     }
 
-    public fun <D : RecyclerViewData> getData(): ArrayList<D> {
+    public fun <D : MyRecyclerViewModel> getData(): ArrayList<D> {
         return (listAdapter as MyRvAdapter<D>).data
 
     }

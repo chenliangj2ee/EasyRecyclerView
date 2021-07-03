@@ -1,8 +1,8 @@
 package com.ktl.mvvm.model
 
-import com.chenliang.library.adapter.RecyclerViewData
+import com.chenliang.library.adapter.MyRecyclerViewModel
 
-class Product : RecyclerViewData() {
+class Product : MyRecyclerViewModel() {
     var name: String = ""
     var price: String = ""
     var src: String = ""

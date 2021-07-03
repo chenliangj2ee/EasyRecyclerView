@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.chenliang.library.R
-import com.chenliang.library.adapter.RecyclerViewData
+import com.chenliang.library.adapter.MyRecyclerViewModel
 import com.chenliang.library.bean.Bind
 import com.chenliang.library.utils.show
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -129,21 +129,21 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
 
         this.setOnLoadMoreListener {
             pageIndex =
-                recyclerView!!.getData<RecyclerViewData>().size / pageSize + defaultPageIndex
+                recyclerView!!.getData<MyRecyclerViewModel>().size / pageSize + defaultPageIndex
             Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
             loadFun?.invoke()
         }
     }
 
 
-    fun <D : RecyclerViewData> bindData(func: (bind: D) -> Unit): MyRefreshRecyclerView {
+    fun <D : MyRecyclerViewModel> bindData(func: (bind: D) -> Unit): MyRefreshRecyclerView {
         recyclerView!!.layoutIds=layoutMap
         recyclerView!!.layoutId=layoutId
         recyclerView!!.binding(func)
         return this
     }
 
-    fun <T : RecyclerViewData> loadData(
+    fun <T : MyRecyclerViewModel> loadData(
         mutableLiveData: MutableLiveData<ArrayList<T>>,
         func: () -> Unit
     ): MyRefreshRecyclerView {
@@ -161,15 +161,15 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         return this
     }
 
-    public fun <D : RecyclerViewData> addData(list: ArrayList<D>?) {
+    public fun <D : MyRecyclerViewModel> addData(list: ArrayList<D>?) {
         if (list != null) {
             if (pageIndex == defaultPageIndex) {
-                recyclerView!!.clearData<RecyclerViewData>()
+                recyclerView!!.clearData<MyRecyclerViewModel>()
             }
             recyclerView!!.addData(list)
 
-            emptyLayout!!.show(recyclerView!!.getData<RecyclerViewData>().size == 0)
-            recyclerView!!.show(recyclerView!!.getData<RecyclerViewData>().size > 0)
+            emptyLayout!!.show(recyclerView!!.getData<MyRecyclerViewModel>().size == 0)
+            recyclerView!!.show(recyclerView!!.getData<MyRecyclerViewModel>().size > 0)
 
             this.setEnableLoadMore(list.size >= pageSize)
         }
@@ -181,7 +181,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         this.finishLoadMore()
     }
 
-    private fun <T : RecyclerViewData> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {
+    private fun <T : MyRecyclerViewModel> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {
         mutableLiveData.observe(this.context as LifecycleOwner, Observer<ArrayList<T>> {
             this.addData(it)
         })
