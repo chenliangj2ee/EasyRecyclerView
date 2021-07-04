@@ -1,10 +1,11 @@
 
 # EasyRecyclerView
-
-## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能, 1.4.0支持单type类型且支持多type类型布局 
+,
+## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装,比paging3更精简，无需关心分页，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，提前加载下一页，让列表展示更加丝滑，同时添加了置顶功能，可从底部迅速回到顶部，最少的代码，实现最全的功能。 
 
 ## 效果展示【图1：单Type类型；图2：多Type类型】：
-![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif) ![Video_20210702_111620_851](https://user-images.githubusercontent.com/4067327/124296514-a0866a00-db8c-11eb-93f2-b17cdc605137.gif)
+![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)  ![Video_20210704_050719_605](https://user-images.githubusercontent.com/4067327/124380101-81ebb480-dced-11eb-92b2-c4baaf58bd3b.gif)
+
 
 
 ## 一、使用步骤： 
@@ -22,7 +23,7 @@
 第二部：在module.gradle中添加：
 ```
     dependencies {
-	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.4.0'
+	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.5.0'
 	} 
 ```
 
@@ -40,24 +41,24 @@
         return PruductListViewModel::class.java
     }
 
-    //model必须继承MyRecyclerViewModel，itemType对应布局类型，为int类型，如下0，1，2，对应的布局依次是R.layout.item_product_0，R.layout.item_product_1，R.layout.item_product_2
+    //model必须继承RecyclerViewData ，itemType对应布局类型，如下0，1，2，对应的布局依次是R.layout.item_product_0，R.layout.item_product_1，R.layout.item_product_2
     //如果后台给的type类型名称不是itemType，请使用@SerializedName自定义属性名字为itemType，itemType为int类型数据
     override fun initCreate() {
     
-   	refresh.bindTypeToItemView(0, R.layout.item_product_0)
-        refresh.bindTypeToItemView(1, R.layout.item_product_1)
-        refresh.bindTypeToItemView(2, R.layout.item_product_2)
+   	refresh.putItemByType("0", R.layout.item_product_0)
+        refresh.putItemByType("1", R.layout.item_product_1)
+        refresh.putItemByType("2", R.layout.item_product_2)
         refresh.bindData<Product> {
-            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it  //0对应R.layout.item_product_0布局
-            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it  //1对应R.layout.item_product_1布局
-            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it  //2对应 R.layout.item_product_2布局
+            if (it.itemType == 0) (it.binding as ItemProduct0Binding).product = it
+            if (it.itemType == 1) (it.binding as ItemProduct1Binding).product = it
+            if (it.itemType == 2) (it.binding as ItemProduct2Binding).product = it
         }
 
         refresh.loadData { 
 	    viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
             viewModel.ps.obs(this) {
             it.y { refresh.addData(it.data) }//向refresh添加数据
-            it.n {}
+            it.n {refresh.stop()}//失败的时候调用
         }
 	}
 	
@@ -67,8 +68,9 @@
 }
 ```
 ## 三、对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
-##### -----app:item_layout="@layout/item_product"：当为单个item布局时，可以这么指定item布局 
-##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局 
+##### -----app:my_item_layout="@layout/item_product"：当为单个item布局时，可以这么指定item布局 
+##### -----app:my_empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局 
+##### -----app:my_top_enable="true"：是否启用回到顶部功能 
 ```
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -79,8 +81,9 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:empty_layout="@layout/layout_empty"
-        app:item_layout="@layout/item_product" />
+        app:my_empty_layout="@layout/layout_empty"
+        app:my_item_layout="@layout/item_product"
+	app:my_top_enable="true"/>
 </layout>
 ```     
 
