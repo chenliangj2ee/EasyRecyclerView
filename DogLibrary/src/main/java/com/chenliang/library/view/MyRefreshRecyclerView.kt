@@ -75,6 +75,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     var defaultPageIndex: Int = 1
     var pageIndex: Int = defaultPageIndex
     var enableTop=false
+    var loading=false
     private var loadFun: (() -> Unit?)? = null
 
     constructor(context: Context?) : super(context!!) {}
@@ -162,18 +163,16 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
 
         this.setOnRefreshListener {
             pageIndex = defaultPageIndex;
-            Log.i("MyDog", "下拉刷新,pageIndex:$pageIndex")
             loadFun?.invoke()
         }
 
         this.setOnLoadMoreListener {
             pageIndex =
                 recyclerView!!.getData<MyRecyclerViewModel>().size / pageSize + defaultPageIndex
-            Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
+            if(recyclerView!!.isLoading())
+                return@setOnLoadMoreListener
             loadFun?.invoke()
         }
-
-//        recyclerView.item
     }
 
 
@@ -225,7 +224,6 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         recyclerView!!.finishLoading()
         pageIndex =
             recyclerView!!.getData<MyRecyclerViewModel>().size / pageSize + defaultPageIndex
-        Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
     }
 
     private fun <T : MyRecyclerViewModel> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {

@@ -10,6 +10,7 @@ import com.ktl.mvvm.act.Bean
 import com.ktl.mvvm.act.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -32,6 +33,7 @@ fun <T> ViewModel.go(
     viewModelScope.launch(Dispatchers.IO) {
         Log.i("chenliang", "发起请求...")
 
+        delay(1000)
         var response = Response<T>()
         response.viewModelScope = viewModelScope
         try {

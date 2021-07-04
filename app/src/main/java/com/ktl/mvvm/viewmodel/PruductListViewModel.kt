@@ -1,5 +1,6 @@
 package com.ktl.mvvm.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.ktl.mvvm.API
 import com.ktl.mvvm.model.Product
@@ -21,6 +22,7 @@ class PruductListViewModel : ViewModel() {
      */
 
     fun getProducts(pageIndex: Int, pageSize: Int) {
+        Log.i("MyDog", "加载数据pageIndex:$pageIndex")
         go({ API.getProductList2(pageIndex, pageSize) }) { ps.value = it.bean }
     }
 

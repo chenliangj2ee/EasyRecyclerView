@@ -48,7 +48,7 @@ open class MyRvAdapter<D : MyRecyclerViewModel>(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 //        Log.i("MyLog", "onBindViewHolder....$position")
         this.position=position
-        if(position>=data.size-5 && !loading){
+        if(position>=data.size-10 && !loading){
             Log.i("MyLog", "自动加载....$position")
             loading=true
             loadFun!!()

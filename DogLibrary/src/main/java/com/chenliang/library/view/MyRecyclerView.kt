@@ -95,6 +95,9 @@ class MyRecyclerView : RecyclerView {
     fun  finishLoading(){
         (listAdapter as MyRvAdapter<*>).finishLoading()
     }
+    fun  isLoading(): Boolean {
+       return  (listAdapter as MyRvAdapter<*>).loading
+    }
     fun  getPosition(): Int {
        return (listAdapter as MyRvAdapter<*>).position
     }
