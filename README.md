@@ -1,6 +1,6 @@
 
 # EasyRecyclerView
-,
+
 ## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装,比paging3更精简，无需关心分页，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，提前加载下一页，让列表展示更加丝滑，同时添加了置顶功能，可从底部迅速回到顶部，最少的代码，实现最全的功能。 
 
 ## 效果展示【图1：单Type类型；图2：多Type类型】：
