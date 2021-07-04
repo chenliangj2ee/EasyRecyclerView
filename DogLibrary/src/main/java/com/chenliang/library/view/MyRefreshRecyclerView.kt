@@ -2,6 +2,7 @@ package com.chenliang.library.view
 
 import android.content.Context
 import android.os.Build
+import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -149,7 +150,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
             topLayout!!.show(false)
             topLayout!!.setOnClickListener {
                 recyclerView!!.smoothScrollToPosition(0)
-//                recyclerView!!.scrollToPosition(0)
+                Handler().postDelayed(Runnable {   recyclerView!!.scrollToPosition(0) },500)
                 topLayout!!.show(false)
             }
         }
