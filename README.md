@@ -1,10 +1,11 @@
 
 # EasyRecyclerView
 
-## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，最少的代码，实现最全的功能, 1.4.0支持单type类型且支持多type类型布局 
+## 史上最精简Refresh RecyclerView库： 通过Kotlin语言，基于MVVM模式，通过DataBinding，ViewModel，LiveData技术，实现了RecyclerView最精简封装，什么下拉刷新，加载更多，分页算法，创建adapter，关联listData，数据为空时自定义emptyView的显示，都可以不用再去关心了，提前加载下一页，让列表展示更加丝滑，同时添加了置顶功能，可从底部迅速回到顶部，最少的代码，实现最全的功能。 
 
 ## 效果展示【图1：单Type类型；图2：多Type类型】：
-![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif) ![Video_20210702_111620_851](https://user-images.githubusercontent.com/4067327/124296514-a0866a00-db8c-11eb-93f2-b17cdc605137.gif)
+![Video_20210626_074415_195](https://user-images.githubusercontent.com/4067327/123512007-7d087e80-d6b7-11eb-9ef1-f981359cd91c.gif)  ![Video_20210704_050719_605](https://user-images.githubusercontent.com/4067327/124380101-81ebb480-dced-11eb-92b2-c4baaf58bd3b.gif)
+
 
 
 ## 一、使用步骤： 
@@ -22,7 +23,7 @@
 第二部：在module.gradle中添加：
 ```
     dependencies {
-	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.4.0'
+	       implementation 'com.github.chenliangj2ee:EasyRecyclerView:1.5.0'
 	} 
 ```
 
@@ -57,7 +58,7 @@
 	    viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
             viewModel.ps.obs(this) {
             it.y { refresh.addData(it.data) }//向refresh添加数据
-            it.n {}
+            it.n {refresh.stop()}//失败的时候调用
         }
 	}
 	
@@ -67,8 +68,9 @@
 }
 ```
 ## 三、对应R.layout.activity_recycleview（ActivityRecycleviewBinding）布局， 
-##### -----app:item_layout="@layout/item_product"：当为单个item布局时，可以这么指定item布局 
-##### -----app:empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局 
+##### -----app:my_item_layout="@layout/item_product"：当为单个item布局时，可以这么指定item布局 
+##### -----app:my_empty_layout="@layout/layout_empty"：指定列表数据为null时显示的布局 
+##### -----app:my_top_enable="true"：是否启用回到顶部功能 
 ```
     <?xml version="1.0" encoding="utf-8"?>
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -79,8 +81,9 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:empty_layout="@layout/layout_empty"
-        app:item_layout="@layout/item_product" />
+        app:my_empty_layout="@layout/layout_empty"
+        app:my_item_layout="@layout/item_product"
+	app:my_top_enable="true"/>
 </layout>
 ```     
 
