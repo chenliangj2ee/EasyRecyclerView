@@ -7,8 +7,10 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:empty_layout="@layout/layout_empty"
-        app:item_layout="@layout/item_product_0" />
+        app:my_empty_layout="@layout/layout_empty"
+        app:my_item_layout="@layout/item_product_0"
+        app:my_top_enable="true"
+      />
 
 
 </layout>

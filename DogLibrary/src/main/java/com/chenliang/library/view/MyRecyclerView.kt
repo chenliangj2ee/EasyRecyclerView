@@ -47,14 +47,14 @@ class MyRecyclerView : RecyclerView {
     lateinit var listAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
     var layoutIds = HashMap<Int, Int>()
     var layoutId = -1
-
+    var loadFun: (() -> Unit?)? = null
     constructor(context: Context?) : super(context!!) {
 
     }
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyRecyclerView)
-        layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item_layout, 0)
+        layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_my_item_layout, 0)
 
     }
 
@@ -67,8 +67,13 @@ class MyRecyclerView : RecyclerView {
             layoutManager = LinearLayoutManager(context)
         if (layoutIds.isEmpty())
             layoutIds[31415926] = layoutId
-        listAdapter = MyRvAdapter<D>(context, layoutIds, func)
+        listAdapter = MyRvAdapter<D>(context, layoutIds,func)
         adapter = listAdapter
+    }
+
+    fun addLoading(func: (() -> Unit?)){
+        loadFun=func
+        (listAdapter as MyRvAdapter<*>).loadFun=func
     }
 
     public fun <D : MyRecyclerViewModel> addData(list: ArrayList<D>) {
@@ -87,4 +92,10 @@ class MyRecyclerView : RecyclerView {
 
     }
 
+    fun  finishLoading(){
+        (listAdapter as MyRvAdapter<*>).finishLoading()
+    }
+    fun  getPosition(): Int {
+       return (listAdapter as MyRvAdapter<*>).position
+    }
 }

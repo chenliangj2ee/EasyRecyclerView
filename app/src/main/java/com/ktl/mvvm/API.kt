@@ -11,7 +11,7 @@ object API {
 
         var results = ArrayList<Product>()
 
-        for (i in 1..10) {
+        for (i in 1..20) {
             var p = Product()
             p.name = "苹果$i"
             p.des = "好吃的苹果，吃了腰不酸"

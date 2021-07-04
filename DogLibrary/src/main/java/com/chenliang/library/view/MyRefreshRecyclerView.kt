@@ -1,18 +1,18 @@
 package com.chenliang.library.view
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.chenliang.library.R
 import com.chenliang.library.adapter.MyRecyclerViewModel
-import com.chenliang.library.bean.Bind
 import com.chenliang.library.utils.show
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -61,17 +61,19 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
 
     private var rootView: FrameLayout? = null
     private var emptyLayout: View? = null
+    private var topLayout: View? = null
     open var recyclerView: MyRecyclerView? = null
     private var params: ViewGroup.LayoutParams? = null
 
     private var emptyLayoutId: Int = 0
+    private var topLayoutId: Int = 0
     private var layoutIds = ArrayList<Int>()
-    var layoutId=-1
+    var layoutId = -1
     var layoutMap = HashMap<Int, Int>()
-    var pageSize: Int = 10
+    var pageSize: Int = 20
     var defaultPageIndex: Int = 1
     var pageIndex: Int = defaultPageIndex
-
+    var enableTop=false
     private var loadFun: (() -> Unit?)? = null
 
     constructor(context: Context?) : super(context!!) {}
@@ -79,8 +81,10 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.MyRefreshRecyclerView)
-        emptyLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_empty_layout, 0)
-          layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_item_layout, 0)
+        emptyLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_my_empty_layout, 0)
+        layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_my_item_layout, 0)
+        topLayoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_my_top_layout, 0)
+        enableTop = typedArray.getBoolean(R.styleable.MyRefreshRecyclerView_my_top_enable, false)
 
         params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         setRefreshHeader(ClassicsHeader(context));
@@ -89,14 +93,16 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         initRoot(context, attributeSet)
         initEmpty(context, attributeSet)
         initRecyclerView(context, attributeSet)
+        initTop(context, attributeSet)
+
         initLoadListener()
         setEnableAutoLoadMore(true)
         setReboundDuration(0)
     }
 
 
-    fun bindTypeToItemView(type:Int,layoutId:Int){
-        layoutMap[type]=layoutId
+    fun bindTypeToItemView(type: Int, layoutId: Int) {
+        layoutMap[type] = layoutId
     }
 
     private fun initRoot(context: Context?, attributeSet: AttributeSet) {
@@ -115,6 +121,38 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
     private fun initRecyclerView(context: Context?, attributeSet: AttributeSet) {
         recyclerView = MyRecyclerView(context!!, attributeSet)
         rootView!!.addView(recyclerView, params)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            recyclerView!!.setOnScrollChangeListener(OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (topLayout != null) {
+                    if (recyclerView!!.getPosition() > 50&&enableTop) {
+                        topLayout!!.show(true)
+                    } else {
+                        topLayout!!.show(false)
+                    }
+
+                }
+            })
+        }
+    }
+
+    private fun initTop(context: Context?, attributeSet: AttributeSet) {
+        if(topLayoutId==0)
+            topLayoutId=R.layout.dog_layout_top
+        if (topLayoutId != 0) {
+            var params =
+                FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            params.gravity =  Gravity.RIGHT +Gravity.BOTTOM
+            params.rightMargin=100
+            params.bottomMargin=100
+            topLayout = View.inflate(context, topLayoutId, null)
+            rootView!!.addView(topLayout, params)
+            topLayout!!.show(false)
+            topLayout!!.setOnClickListener {
+                recyclerView!!.smoothScrollToPosition(0)
+//                recyclerView!!.scrollToPosition(0)
+                topLayout!!.show(false)
+            }
+        }
     }
 
     private fun initLoadListener() {
@@ -133,12 +171,14 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
             Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
             loadFun?.invoke()
         }
+
+//        recyclerView.item
     }
 
 
     fun <D : MyRecyclerViewModel> bindData(func: (bind: D) -> Unit): MyRefreshRecyclerView {
-        recyclerView!!.layoutIds=layoutMap
-        recyclerView!!.layoutId=layoutId
+        recyclerView!!.layoutIds = layoutMap
+        recyclerView!!.layoutId = layoutId
         recyclerView!!.binding(func)
         return this
     }
@@ -148,6 +188,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         func: () -> Unit
     ): MyRefreshRecyclerView {
         loadFun = func
+        recyclerView!!.addLoading(func)
         autoRefresh()
         observeData(mutableLiveData)
         return this
@@ -157,6 +198,7 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         func: () -> Unit
     ): MyRefreshRecyclerView {
         loadFun = func
+        recyclerView!!.addLoading(func)
         autoRefresh()
         return this
     }
@@ -176,9 +218,13 @@ class MyRefreshRecyclerView : SmartRefreshLayout {
         stop()
     }
 
-    private fun stop() {
+    public fun stop() {
         this.finishRefresh()
         this.finishLoadMore()
+        recyclerView!!.finishLoading()
+        pageIndex =
+            recyclerView!!.getData<MyRecyclerViewModel>().size / pageSize + defaultPageIndex
+        Log.i("MyDog", "加载更多,pageIndex:$pageIndex")
     }
 
     private fun <T : MyRecyclerViewModel> observeData(mutableLiveData: MutableLiveData<ArrayList<T>>) {

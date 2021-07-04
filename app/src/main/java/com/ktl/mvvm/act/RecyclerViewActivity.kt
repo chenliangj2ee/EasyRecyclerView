@@ -47,7 +47,7 @@ class RecyclerViewActivity : MyBaseActivity<ActivityRecycleviewBinding, PruductL
         viewModel.getProducts(refresh.pageIndex, refresh.pageSize)
         viewModel.ps.obs(this) {
             it.y { refresh.addData(it.data) }
-            it.n {}
+            it.n {refresh.stop()}
         }
     }
 

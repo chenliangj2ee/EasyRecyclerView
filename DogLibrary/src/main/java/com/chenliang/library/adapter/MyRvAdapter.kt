@@ -19,12 +19,14 @@ open class MyRvAdapter<D : MyRecyclerViewModel>(
     func: (d: D) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var loading=false;
     var con = context;
     var data = ArrayList<D>()
     var layoutIds = layoutIds;
     var viewHolders = HashMap<Int, MyViewHolder>()
     var func = func
-
+    var loadFun: (() -> Unit?)? = null
+    var position=0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         var type=viewType
@@ -39,8 +41,19 @@ open class MyRvAdapter<D : MyRecyclerViewModel>(
         return viewHolders[type]!!
     }
 
+    fun  finishLoading(){
+        loading=false
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.i("MyLog", "onBindViewHolder....")
+//        Log.i("MyLog", "onBindViewHolder....$position")
+        this.position=position
+        if(position>=data.size-5 && !loading){
+            Log.i("MyLog", "自动加载....$position")
+            loading=true
+            loadFun!!()
+        }
+
         val binding: ViewDataBinding = DataBindingUtil.getBinding(holder.itemView)!!
         if (binding != null) {
             data[position].binding = binding
