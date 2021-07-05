@@ -54,7 +54,7 @@ class MyRecyclerView : RecyclerView {
 
     constructor(context: Context?, attributeSet: AttributeSet) : super(context!!, attributeSet) {
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.MyRecyclerView)
-        layoutId = typedArray.getResourceId(R.styleable.MyRefreshRecyclerView_my_item_layout, 0)
+        layoutId = typedArray.getResourceId(R.styleable.MyRecyclerView_my_item_layout, 0)
 
     }
 

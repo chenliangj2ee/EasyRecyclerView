@@ -51,7 +51,9 @@ open class MyRvAdapter<D : MyRecyclerViewModel>(
         if(position>=data.size-10 && !loading){
             Log.i("MyLog", "自动加载....$position")
             loading=true
-            loadFun!!()
+            if(loadFun!=null){
+                loadFun!!()
+            }
         }
 
         val binding: ViewDataBinding = DataBindingUtil.getBinding(holder.itemView)!!
